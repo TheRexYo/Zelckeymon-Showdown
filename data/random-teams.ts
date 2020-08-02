@@ -745,7 +745,7 @@ export class RandomTeams {
 					if (hasAbility['Contrary']) isSetup = true;
 					break;
 				case 'thunderwave': case 'voltswitch':
-					if (counter.setupType || !!counter['speedsetup'] || hasMove['raindance']) rejected = true;
+					if (counter.setupType || !!counter['speedsetup'] || hasMove['rain']) rejected = true;
 					break;
 				case 'toxic':
 					if (counter.setupType || hasMove['sludgewave'] || hasMove['thunderwave'] || hasMove['trickroom'] || hasMove['willowisp']) rejected = true;
@@ -1029,7 +1029,7 @@ export class RandomTeams {
 				} else if (ability === 'Bulletproof' || ability === 'Overcoat') {
 					rejectAbility = (counter.setupType && hasAbility['Soundproof']);
 				} else if (ability === 'Chlorophyll') {
-					rejectAbility = (species.baseStats.spe > 100 || !counter['Fire'] && !hasMove['sunnyday'] && !teamDetails['sun']);
+					rejectAbility = (species.baseStats.spe > 100 || !counter['Fire'] && !hasMove['sun'] && !teamDetails['sun']);
 				} else if (ability === 'Competitive') {
 					rejectAbility = (counter['Special'] < 2 || hasMove['rest'] && hasMove['sleeptalk']);
 				} else if (ability === 'Compound Eyes') {
@@ -1097,7 +1097,7 @@ export class RandomTeams {
 				} else if (ability === 'Sweet Veil') {
 					rejectAbility = hasType['Grass'];
 				} else if (ability === 'Swift Swim') {
-					rejectAbility = (!hasMove['raindance'] && (hasAbility['Intimidate'] || hasAbility['Slush Rush'] || hasAbility['Water Absorb']));
+					rejectAbility = (!hasMove['rain'] && (hasAbility['Intimidate'] || hasAbility['Slush Rush'] || hasAbility['Water Absorb']));
 				} else if (ability === 'Synchronize') {
 					rejectAbility = (counter.setupType || counter.Status < 2);
 				} else if (ability === 'Technician') {
@@ -1111,7 +1111,7 @@ export class RandomTeams {
 				} else if (ability === 'Volt Absorb') {
 					rejectAbility = (this.dex.getEffectiveness('Electric', species) < -1);
 				} else if (ability === 'Water Absorb') {
-					rejectAbility = (hasMove['raindance'] || hasAbility['Strong Jaw'] || hasAbility['Volt Absorb']);
+					rejectAbility = (hasMove['rain'] || hasAbility['Strong Jaw'] || hasAbility['Volt Absorb']);
 				}
 
 				if (rejectAbility) {
@@ -1212,7 +1212,7 @@ export class RandomTeams {
 			item = 'Choice Band';
 		} else if (counter.Special >= 3 && (hasMove['partingshot'] || hasMove['uturn'])) {
 			item = 'Choice Specs';
-		} else if (hasMove['raindance'] || hasMove['sunnyday'] || ability === 'Stance Change' && counter.Physical + counter.Special > 2) {
+		} else if (hasMove['rain'] || hasMove['sun'] || ability === 'Stance Change' && counter.Physical + counter.Special > 2) {
 			item = 'Life Orb';
 		} else if (hasMove['outrage'] && counter.setupType) {
 			item = 'Lum Berry';
@@ -1523,9 +1523,9 @@ export class RandomTeams {
 				if (item.megaStone) teamDetails['megaStone'] = 1;
 				if (item.zMove) teamDetails['zMove'] = 1;
 				if (set.ability === 'Snow Warning' || set.moves.includes('hail')) teamDetails['hail'] = 1;
-				if (set.moves.includes('raindance') || set.ability === 'Drizzle' && !item.onPrimal) teamDetails['rain'] = 1;
+				if (set.moves.includes('rain') || set.ability === 'Drizzle' && !item.onPrimal) teamDetails['rain'] = 1;
 				if (set.ability === 'Sand Stream') teamDetails['sand'] = 1;
-				if (set.moves.includes('sunnyday') || set.ability === 'Drought' && !item.onPrimal) teamDetails['sun'] = 1;
+				if (set.moves.includes('sun') || set.ability === 'Drought' && !item.onPrimal) teamDetails['sun'] = 1;
 				if (set.moves.includes('spikes')) teamDetails['spikes'] = (teamDetails['spikes'] || 0) + 1;
 				if (set.moves.includes('stealthrock')) teamDetails['stealthRock'] = 1;
 				if (set.moves.includes('stickyweb')) teamDetails['stickyWeb'] = 1;

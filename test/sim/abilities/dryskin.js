@@ -13,18 +13,18 @@ describe('Dry Skin', function () {
 	it('should take 1/8 max HP every turn that Sunny Day is active', function () {
 		battle = common.createBattle();
 		battle.setPlayer('p1', {team: [{species: 'Toxicroak', ability: 'dryskin', moves: ['bulkup']}]});
-		battle.setPlayer('p2', {team: [{species: 'Ninetales', ability: 'flashfire', moves: ['sunnyday']}]});
+		battle.setPlayer('p2', {team: [{species: 'Ninetales', ability: 'flashfire', moves: ['sun']}]});
 		const dryMon = battle.p1.active[0];
-		assert.hurtsBy(dryMon, Math.floor(dryMon.maxhp / 8), () => battle.makeChoices('move bulkup', 'move sunnyday'));
+		assert.hurtsBy(dryMon, Math.floor(dryMon.maxhp / 8), () => battle.makeChoices('move bulkup', 'move sun'));
 	});
 
 	it('should heal 1/8 max HP every turn that Rain Dance is active', function () {
 		battle = common.createBattle();
 		battle.setPlayer('p1', {team: [{species: 'Toxicroak', ability: 'dryskin', moves: ['substitute']}]});
-		battle.setPlayer('p2', {team: [{species: 'Politoed', ability: 'damp', moves: ['encore', 'raindance']}]});
+		battle.setPlayer('p2', {team: [{species: 'Politoed', ability: 'damp', moves: ['encore', 'rain']}]});
 		const dryMon = battle.p1.active[0];
 		battle.makeChoices('move substitute', 'move encore');
-		assert.hurtsBy(dryMon, -Math.floor(dryMon.maxhp / 8), () => battle.makeChoices('move substitute', 'move raindance'));
+		assert.hurtsBy(dryMon, -Math.floor(dryMon.maxhp / 8), () => battle.makeChoices('move substitute', 'move rain'));
 	});
 
 	it('should grant immunity to Water-type moves and heal 1/4 max HP', function () {

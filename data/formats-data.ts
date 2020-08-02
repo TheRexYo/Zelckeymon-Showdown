@@ -1,8 +1,14 @@
 export const BattleFormatsData: {[k: string]: SpeciesFormatsData} = {
 	chomp: {
-		tier: "LC",
+		tier: "E",
 	},
 	zelckey: {
-		tier: "LC",
+		tier: "E",
+	},
+	pyrex: {
+		tier: "E",
+	},
+	spookaburra: {
+		tier: "E",
 	},
 };

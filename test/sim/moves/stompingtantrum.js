@@ -43,7 +43,7 @@ describe('Stomping Tantrum', function () {
 	it('should double its Base Power if the last move used was a spread move that partially hit protect and otherwise failed', function () {
 		battle = common.createBattle({gameType: 'doubles'});
 		battle.setPlayer('p1', {team: [
-			{species: 'Cresselia', ability: 'levitate', moves: ['sunnyday']},
+			{species: 'Cresselia', ability: 'levitate', moves: ['sun']},
 			{species: 'Groudon', ability: 'drought', moves: ['stompingtantrum', 'precipiceblades']},
 		]});
 		battle.setPlayer('p2', {team: [
@@ -55,8 +55,8 @@ describe('Stomping Tantrum', function () {
 			if (move.id === 'stompingtantrum') assert.equal(basePower, 150);
 		});
 
-		battle.makeChoices('move sunnyday, move precipiceblades', 'move protect, move recover');
-		battle.makeChoices('move sunnyday, move stompingtantrum 1', 'move calmmind, move recover');
+		battle.makeChoices('move sun, move precipiceblades', 'move protect, move recover');
+		battle.makeChoices('move sun, move stompingtantrum 1', 'move calmmind, move recover');
 	});
 
 	it('should not double its Base Power if the last move used on the previous turn was a successful Celebrate', function () {

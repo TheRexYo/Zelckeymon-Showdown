@@ -22,7 +22,7 @@ describe('Flower Gift', function () {
 		const baseSpd = battle.p1.active[1].getStat('spd');
 
 		// Set the weather to sun and re-check
-		battle.field.setWeather('sunnyday', 'debug');
+		battle.field.setWeather('sun', 'debug');
 		assert.equal(battle.p1.active[0].getStat('atk'), battle.modify(cherAtk, 1.5));
 		assert.equal(battle.p1.active[0].getStat('spd'), battle.modify(cherSpd, 1.5));
 		assert.equal(battle.p1.active[1].getStat('atk'), battle.modify(baseAtk, 1.5));
@@ -42,7 +42,7 @@ describe('Flower Gift', function () {
 		const baseSpd = battle.p1.active[1].getStat('spd');
 
 		// Set the weather to sun and re-check
-		battle.field.setWeather('sunnyday', 'debug');
+		battle.field.setWeather('sun', 'debug');
 		assert.equal(battle.p1.active[0].getStat('atk'), battle.modify(cherAtk, 1.5));
 		assert.equal(battle.p1.active[0].getStat('spd'), battle.modify(cherSpd, 1.5));
 		assert.equal(battle.p1.active[1].getStat('atk'), battle.modify(baseAtk, 1.5));

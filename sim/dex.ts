@@ -47,7 +47,7 @@ import * as path from 'path';
 import * as Data from './dex-data';
 import {PRNG, PRNGSeed} from './prng';
 
-const BASE_MOD = 'beta' as ID;
+const BASE_MOD = 'gen8' as ID;
 const DEFAULT_MOD = BASE_MOD;
 const DATA_DIR = path.resolve(__dirname, '../.data-dist');
 const MODS_DIR = path.resolve(__dirname, '../.data-dist/mods');

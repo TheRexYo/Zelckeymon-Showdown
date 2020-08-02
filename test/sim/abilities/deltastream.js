@@ -58,8 +58,8 @@ describe('Delta Stream', function () {
 		battle.setPlayer('p1', {team: [{species: "Rayquaza", ability: 'deltastream', moves: ['helpinghand']}]});
 		battle.setPlayer('p2', {team: [
 			{species: "Abra", ability: 'magicguard', moves: ['teleport']},
-			{species: "Kyogre", ability: 'drizzle', moves: ['raindance']},
-			{species: "Groudon", ability: 'drought', moves: ['sunnyday']},
+			{species: "Kyogre", ability: 'drizzle', moves: ['rain']},
+			{species: "Groudon", ability: 'drought', moves: ['sun']},
 			{species: "Tyranitar", ability: 'sandstream', moves: ['sandstorm']},
 			{species: "Abomasnow", ability: 'snowwarning', moves: ['hail']},
 		]});

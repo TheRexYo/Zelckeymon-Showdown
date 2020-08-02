@@ -45,8 +45,8 @@ describe('Normalize', function () {
 	it('should not change Weather Ball to Normal-type if sun, rain, or hail is an active weather', function () {
 		battle = common.createBattle();
 		battle.setPlayer('p1', {team: [{species: "Delcatty", ability: 'normalize', item: 'laggingtail', moves: ['weatherball']}]});
-		battle.setPlayer('p2', {team: [{species: "Latias", ability: 'colorchange', moves: ['sunnyday']}]});
-		battle.makeChoices('move weatherball', 'move sunnyday');
+		battle.setPlayer('p2', {team: [{species: "Latias", ability: 'colorchange', moves: ['sun']}]});
+		battle.makeChoices('move weatherball', 'move sun');
 		assert.ok(battle.p2.active[0].hasType('Fire'));
 	});
 
@@ -94,9 +94,9 @@ describe('Normalize [Gen 4]', function () {
 	it('should change Weather Ball to Normal-type even if sun, rain, or hail is an active weather', function () {
 		battle = common.gen(4).createBattle([
 			[{species: "Delcatty", ability: 'normalize', item: 'laggingtail', moves: ['weatherball']}],
-			[{species: "Latias", ability: 'colorchange', moves: ['sunnyday']}],
+			[{species: "Latias", ability: 'colorchange', moves: ['sun']}],
 		]);
-		battle.makeChoices('move weatherball', 'move sunnyday');
+		battle.makeChoices('move weatherball', 'move sun');
 		assert.ok(battle.p2.active[0].hasType('Normal'));
 	});
 });

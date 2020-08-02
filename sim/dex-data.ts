@@ -735,7 +735,7 @@ export class Species extends BasicEffect implements Readonly<BasicEffect & Speci
 /** Possible move flags. */
 interface MoveFlags {
 	authentic?: 1; // Ignores a target's substitute.
-	bite?: 1; // Power is multiplied by 1.5 when used by a Pokemon with the Ability Strong Jaw.
+	bite?: 1; // Counts as a 'Bite' move.
 	bullet?: 1; // Has no effect on Pokemon with the Ability Bulletproof.
 	charge?: 1; // The user is unable to make a move between turns.
 	contact?: 1; // Makes contact.
@@ -755,6 +755,11 @@ interface MoveFlags {
 	reflectable?: 1; // Bounced back to the original user by Magic Coat or the Ability Magic Bounce.
 	snatch?: 1; // Can be stolen from the original user and instead used by another Pokemon using Snatch.
 	sound?: 1; // Has no effect on Pokemon with the Ability Soundproof.
+	//Zelckeymon Additions
+	tackle?: 1; // Counts as a 'Tackle' move.
+	body?: 1; // Counts as a 'Body' move.
+	emergency?: 1; //Used as a "Zero-PP" move, like struggle or wait.
+	jaw?: 1; //Counts as a 'Jaw' move.
 }
 
 type MoveCategory = 'Physical' | 'Special' | 'Status';

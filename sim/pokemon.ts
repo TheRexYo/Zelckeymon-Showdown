@@ -673,7 +673,7 @@ export class Pokemon {
 			}
 			if (target.side.active.length > 1 && !move.tracksTarget) {
 				const isCharging = move.flags['charge'] && !this.volatiles['twoturnmove'] &&
-					!(move.id.startsWith('solarb') && this.battle.field.isWeather(['sunnyday', 'desolateland'])) &&
+					!(move.id.startsWith('solarb') && this.battle.field.isWeather(['sun', 'desolateland'])) &&
 					!(this.hasItem('powerherb') && move.id !== 'skydrop');
 				if (!isCharging) {
 					target = this.battle.priorityEvent('RedirectTarget', this, this, move, target);
@@ -1859,8 +1859,8 @@ export class Pokemon {
 	effectiveWeather() {
 		const weather = this.battle.field.effectiveWeather();
 		switch (weather) {
-		case 'sunnyday':
-		case 'raindance':
+		case 'sun':
+		case 'rain':
 		case 'desolateland':
 		case 'primordialsea':
 			if (this.hasItem('utilityumbrella')) return '';

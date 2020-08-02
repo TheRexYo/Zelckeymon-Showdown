@@ -19,7 +19,7 @@ describe("Dynamax", function () {
 			{species: 'Shedinja', ability: 'sturdy', item: 'ringtarget', moves: ['splash']},
 		]});
 		battle.makeChoices('move heatwave dynamax', 'auto');
-		assert.equal(battle.field.weather, 'sunnyday');
+		assert.equal(battle.field.weather, 'sun');
 		battle.makeChoices('move facade', 'auto');
 		assert.statStage(battle.p2.active[0], 'spe', -1);
 		battle.makeChoices('move superpower', 'auto');
@@ -46,7 +46,7 @@ describe("Dynamax", function () {
 			{species: 'Mew', moves: ['watergun']},
 		]]);
 		battle.makeChoices('move 1', 'move 1 dynamax');
-		assert.equal(battle.field.weather, 'raindance');
+		assert.equal(battle.field.weather, 'rain');
 	});
 
 	it('Max Move weather activates before Sand Spit', function () {

@@ -479,6 +479,11 @@ export class TeamValidator {
 					if (tierSpecies.abilities[0] === ability.name) {
 						set.ability = species.abilities[0];
 					} else {
+						console.log("ability.name = " + ability.name);
+						console.log("tierSpecies.abilities[0] = " + tierSpecies.abilities[0]);
+						console.log("Object.values(species.abilities) = " + JSON.stringify(Object.values(species.abilities)));
+						console.log("tierSpecies = " + tierSpecies.toString());
+						console.log("species = " + species.toString());
 						problems.push(`${name} can't have ${set.ability}.`);
 					}
 				}

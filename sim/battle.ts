@@ -2068,6 +2068,7 @@ export class Battle {
 		const defender = target;
 		let attackStat: StatNameExceptHP = category === 'Physical' ? 'atk' : 'spa';
 		const defenseStat: StatNameExceptHP = defensiveCategory === 'Physical' ? 'def' : 'spd';
+		const speedStat: StatNameExceptHP = 'spe';
 		if (move.useSourceDefensiveAsOffensive) {
 			attackStat = defenseStat;
 			// Body press really wants to use the def stat,
@@ -2083,6 +2084,9 @@ export class Battle {
 					this.hint("Body Press uses Sp. Def boosts when Wonder Room is active.");
 				}
 			}
+		}
+		if (move.useSourceSpeedAsOffensive) {
+			attackStat = speedStat;
 		}
 
 		const statTable = {atk: 'Atk', def: 'Def', spa: 'SpA', spd: 'SpD', spe: 'Spe'};

@@ -12,10 +12,10 @@ describe('Cloud Nine', function () {
 
 	it('should treat the weather as none for the purposes of formes, moves and abilities', function () {
 		battle = common.createBattle();
-		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['sunnyday']}]});
+		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['sun']}]});
 		battle.setPlayer('p2', {team: [{species: 'Cherrim', ability: 'flowergift', item: 'laggingtail', moves: ['solarbeam']}]});
 		const [weatherSuppressor, weatherUser] = [battle.p1.active[0], battle.p2.active[0]];
-		assert.false.hurts(weatherSuppressor, () => battle.makeChoices('move sunnyday', 'move solarbeam')); // Solar Beam must charge
+		assert.false.hurts(weatherSuppressor, () => battle.makeChoices('move sun', 'move solarbeam')); // Solar Beam must charge
 		assert.ok(battle.field.isWeather(''));
 		assert.species(weatherUser, 'Cherrim');
 	});
@@ -64,34 +64,34 @@ describe('Cloud Nine', function () {
 
 	it('should not negate Desolate Land\'s ability to prevent other weathers from activating', function () {
 		battle = common.createBattle();
-		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['raindance']}]});
-		battle.setPlayer('p2', {team: [{species: 'Groudon', ability: 'desolateland', moves: ['sunnyday']}]});
-		assert.constant(() => battle.weather, () => battle.makeChoices('move raindance', 'move sunnyday'));
+		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['rain']}]});
+		battle.setPlayer('p2', {team: [{species: 'Groudon', ability: 'desolateland', moves: ['sun']}]});
+		assert.constant(() => battle.weather, () => battle.makeChoices('move rain', 'move sun'));
 	});
 
 	it('should not negate Primordial Sea\'s ability to prevent other weathers from activating', function () {
 		battle = common.createBattle();
-		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['raindance']}]});
-		battle.setPlayer('p2', {team: [{species: 'Kyogre', ability: 'primordialsea', moves: ['sunnyday']}]});
-		assert.constant(() => battle.weather, () => battle.makeChoices('move raindance', 'move sunnyday'));
+		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['rain']}]});
+		battle.setPlayer('p2', {team: [{species: 'Kyogre', ability: 'primordialsea', moves: ['sun']}]});
+		assert.constant(() => battle.weather, () => battle.makeChoices('move rain', 'move sun'));
 	});
 
 	it('should not negate Delta Stream\'s ability to prevent other weathers from activating', function () {
 		battle = common.createBattle();
-		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['raindance']}]});
-		battle.setPlayer('p2', {team: [{species: 'Rayquaza', ability: 'deltastream', moves: ['sunnyday']}]});
-		assert.constant(() => battle.weather, () => battle.makeChoices('move raindance', 'move sunnyday'));
+		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['rain']}]});
+		battle.setPlayer('p2', {team: [{species: 'Rayquaza', ability: 'deltastream', moves: ['sun']}]});
+		assert.constant(() => battle.weather, () => battle.makeChoices('move rain', 'move sun'));
 	});
 
 	it('should still display status of the weather', function () {
 		battle = common.createBattle();
 		battle.setPlayer('p1', {team: [{species: 'Golduck', ability: 'cloudnine', moves: ['calmmind']}]});
-		battle.setPlayer('p2', {team: [{species: 'Sunkern', ability: 'solarpower', moves: ['sunnyday']}]});
-		battle.makeChoices('move calmmind', 'move sunnyday');
-		assert.equal(battle.log[battle.lastMoveLine + 1], '|-weather|SunnyDay');
+		battle.setPlayer('p2', {team: [{species: 'Sunkern', ability: 'solarpower', moves: ['sun']}]});
+		battle.makeChoices('move calmmind', 'move sun');
+		assert.equal(battle.log[battle.lastMoveLine + 1], '|-weather|sun');
 		for (let i = 0; i < 4; i++) {
-			assert.equal(battle.log[battle.lastMoveLine + 3], '|-weather|SunnyDay|[upkeep]');
-			battle.makeChoices('move calmmind', 'move sunnyday');
+			assert.equal(battle.log[battle.lastMoveLine + 3], '|-weather|sun|[upkeep]');
+			battle.makeChoices('move calmmind', 'move sun');
 		}
 		assert.equal(battle.log[battle.lastMoveLine + 3], '|-weather|none');
 	});

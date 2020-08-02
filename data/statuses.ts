@@ -464,9 +464,53 @@ export const BattleStatuses: {[k: string]: PureEffectData} = {
 
 	// weather is implemented here since it's so important to the game
 
-	raindance: {
-		name: 'RainDance',
-		id: 'raindance',
+	verdant: {
+		name: 'verdant',
+		id: 'verdant',
+		num: 0,
+		effectType: 'Weather',
+		duration: 5,
+		durationCallback(source, effect) {
+			if (source?.hasItem('damprock')) {
+				return 8;
+			}
+			return 5;
+		},
+		onWeatherModifyDamage(damage, attacker, defender, move) {
+			if (defender.hasItem('utilityumbrella')) return;
+			if (move.type === 'Grass') {
+				this.debug('verdant grass boost');
+				return this.chainModify(1.5);
+			}
+			if (move.type === 'Fire') {
+				this.debug('verdant fire boost');
+				return this.chainModify(1.25);
+			}
+			if (move.type === 'Water') {
+				this.debug('verdant water boost');
+				return this.chainModify(1.25);
+			}
+		},
+		onStart(battle, source, effect) {
+			if (effect?.effectType === 'Ability') {
+				if (this.gen <= 5) this.effectData.duration = 0;
+				this.add('-weather', 'verdant', '[from] ability: ' + effect, '[of] ' + source);
+			} else {
+				this.add('-weather', 'verdant');
+			}
+		},
+		onResidualOrder: 1,
+		onResidual() {
+			this.add('-weather', 'verdant', '[upkeep]');
+			this.eachEvent('Weather');
+		},
+		onEnd() {
+			this.add('-weather', 'none');
+		},
+	},
+	rain: {
+		name: 'rain',
+		id: 'rain',
 		num: 0,
 		effectType: 'Weather',
 		duration: 5,
@@ -490,14 +534,14 @@ export const BattleStatuses: {[k: string]: PureEffectData} = {
 		onStart(battle, source, effect) {
 			if (effect?.effectType === 'Ability') {
 				if (this.gen <= 5) this.effectData.duration = 0;
-				this.add('-weather', 'RainDance', '[from] ability: ' + effect, '[of] ' + source);
+				this.add('-weather', 'rain', '[from] ability: ' + effect, '[of] ' + source);
 			} else {
-				this.add('-weather', 'RainDance');
+				this.add('-weather', 'rain');
 			}
 		},
 		onResidualOrder: 1,
 		onResidual() {
-			this.add('-weather', 'RainDance', '[upkeep]');
+			this.add('-weather', 'rain', '[upkeep]');
 			this.eachEvent('Weather');
 		},
 		onEnd() {
@@ -538,9 +582,9 @@ export const BattleStatuses: {[k: string]: PureEffectData} = {
 			this.add('-weather', 'none');
 		},
 	},
-	sunnyday: {
-		name: 'SunnyDay',
-		id: 'sunnyday',
+	sun: {
+		name: 'sun',
+		id: 'sun',
 		num: 0,
 		effectType: 'Weather',
 		duration: 5,
@@ -564,9 +608,9 @@ export const BattleStatuses: {[k: string]: PureEffectData} = {
 		onStart(battle, source, effect) {
 			if (effect?.effectType === 'Ability') {
 				if (this.gen <= 5) this.effectData.duration = 0;
-				this.add('-weather', 'SunnyDay', '[from] ability: ' + effect, '[of] ' + source);
+				this.add('-weather', 'sun', '[from] ability: ' + effect, '[of] ' + source);
 			} else {
-				this.add('-weather', 'SunnyDay');
+				this.add('-weather', 'sun');
 			}
 		},
 		onImmunity(type, pokemon) {
@@ -575,7 +619,7 @@ export const BattleStatuses: {[k: string]: PureEffectData} = {
 		},
 		onResidualOrder: 1,
 		onResidual() {
-			this.add('-weather', 'SunnyDay', '[upkeep]');
+			this.add('-weather', 'sun', '[upkeep]');
 			this.eachEvent('Weather');
 		},
 		onEnd() {

@@ -14,23 +14,25 @@ const Formats = [
 	},
 	{
 		name: "Standard",
-		desc: `Standard Zelckeymon rules.`,
+		section: "Main",
+		desc: 'Standard Zelckeymon rules.',
 		threads: [
-			`&bullet; <a href="https://www.smogon.com/forums/threads/3656537/">Random Battle Suggestions</a>`,
+			'&bullet; <a href="https://www.smogon.com/forums/threads/3656537/">Random Battle Suggestions</a>',
 		],
 
-		mod: 'beta',
-		ruleset: ['Standard'],
+		mod: 'gen8',
+		ruleset: ['Obtainable', 'Nickname Clause', 'OHKO Clause', 'HP Percentage Mod', 'Cancel Mod'],
 	},
 	{
 		name: "Test",
-		desc: `No team validation. For testing only.`,
+		section: "Other",
+		desc: 'No team validation. For testing only.',
 		threads: [
-			`&bullet; <a href="https://www.smogon.com/forums/threads/3656537/">Random Battle Suggestions</a>`,
+			'&bullet; <a href="https://www.smogon.com/forums/threads/3656537/">Random Battle Suggestions</a>',
 		],
 
-		mod: 'beta',
-		ruleset: ['Test'],
+		mod: 'gen8',
+		ruleset: ['HP Percentage Mod', 'Team Preview', 'Cancel Mod'],
 	},
 ];
 

@@ -7,22 +7,6 @@ export const BattleFormats: {[k: string]: FormatsData} = {
 	// Rulesets
 	///////////////////////////////////////////////////////////////////
 
-	test: {
-		effectType: 'ValidatorRule',
-		name: 'Test',
-		desc: "For testing purposes.",
-		ruleset: [
-			'Team Preview', 'HP Percentage Mod', 'Cancel Mod',
-		],
-	},
-	standard: {
-		effectType: 'ValidatorRule',
-		name: 'Standard',
-		desc: "The standard Zelckeymon ruleset.",
-		ruleset: [
-			'Obtainable', 'Team Preview', 'Nickname Clause', 'OHKO Clause', 'HP Percentage Mod', 'Cancel Mod',
-		],
-	},
 	standardnext: {
 		effectType: 'ValidatorRule',
 		name: 'Standard NEXT',
