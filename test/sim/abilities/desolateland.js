@@ -14,7 +14,7 @@ describe('Desolate Land', function () {
 		battle = common.createBattle();
 		battle.setPlayer('p1', {team: [{species: "Groudon", ability: 'desolateland', moves: ['helpinghand']}]});
 		battle.setPlayer('p2', {team: [{species: "Abra", ability: 'magicguard', moves: ['teleport']}]});
-		assert.ok(battle.field.isWeather('desolateland'));
+		assert(battle.field.isWeather('desolateland'));
 	});
 
 	it('should increase the damage (not the basePower) of Fire-type attacks', function () {
@@ -51,16 +51,16 @@ describe('Desolate Land', function () {
 		battle.setPlayer('p1', {team: [{species: "Groudon", ability: 'desolateland', moves: ['helpinghand']}]});
 		battle.setPlayer('p2', {team: [
 			{species: "Abra", ability: 'magicguard', moves: ['teleport']},
-			{species: "Kyogre", ability: 'drizzle', moves: ['rain']},
-			{species: "Groudon", ability: 'drought', moves: ['sun']},
+			{species: "Kyogre", ability: 'drizzle', moves: ['raindance']},
+			{species: "Groudon", ability: 'drought', moves: ['sunnyday']},
 			{species: "Tyranitar", ability: 'sandstream', moves: ['sandstorm']},
 			{species: "Abomasnow", ability: 'snowwarning', moves: ['hail']},
 		]});
 		for (let i = 2; i <= 5; i++) {
 			battle.makeChoices('move helpinghand', 'switch ' + i);
-			assert.ok(battle.field.isWeather('desolateland'));
+			assert(battle.field.isWeather('desolateland'));
 			battle.makeChoices('move helpinghand', 'move 1');
-			assert.ok(battle.field.isWeather('desolateland'));
+			assert(battle.field.isWeather('desolateland'));
 		}
 	});
 

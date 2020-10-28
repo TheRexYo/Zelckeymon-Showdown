@@ -45,9 +45,9 @@ describe('Trick Room', function () {
 		battle.makeChoices('move trickroom', 'move shellsmash');
 		battle.makeChoices('move explosion', 'move shellsmash');
 		battle.makeChoices('switch hippowdon', 'switch ninetales');
-		assert.equal(battle.p1.active[0].speciesid, 'hippowdon');
-		assert.equal(battle.p2.active[0].speciesid, 'ninetales');
-		assert.equal(battle.field.effectiveWeather(), 'sun');
+		assert.equal(battle.p1.active[0].species.id, 'hippowdon');
+		assert.equal(battle.p2.active[0].species.id, 'ninetales');
+		assert.equal(battle.field.effectiveWeather(), 'sunnyday');
 	});
 
 	// The following two tests involve the Trick Room glitch, where turn order changes when a Pokemon goes to 1809 speed.
@@ -91,6 +91,6 @@ describe('Trick Room', function () {
 		});
 
 		battle.makeChoices('move earthquake', 'move gyroball');
-		assert.notStrictEqual(battle.p1.active[0].hp, battle.p1.active[0].maxhp);
+		assert.notEqual(battle.p1.active[0].hp, battle.p1.active[0].maxhp);
 	});
 });

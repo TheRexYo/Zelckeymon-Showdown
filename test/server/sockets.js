@@ -1,9 +1,14 @@
 'use strict';
 
+// These tests have not been updated to reflect the latest version of Sockets
+// Anyone should feel free to try to rewrite them to work
+
+/*
+
 const assert = require('assert').strict;
 const cluster = require('cluster');
 
-describe.skip('Sockets', function () {
+describe('Sockets', function () {
 	const spawnWorker = () => (
 		new Promise(resolve => {
 			const worker = Sockets.spawnWorker();
@@ -91,7 +96,7 @@ describe.skip('Sockets', function () {
 					process.send(!socket);`;
 				Sockets.socketDisconnect(worker, sid);
 			}).then(chain(worker => data => {
-				assert.ok(data);
+				assert(data);
 			}, querySocket));
 		});
 
@@ -135,7 +140,7 @@ describe.skip('Sockets', function () {
 					process.send(room && room.has(${sid}));`;
 				Sockets.roomAdd(worker, cid, sid);
 			}).then(chain(worker => data => {
-				assert.ok(data);
+				assert(data);
 			}, queryChannel));
 		});
 
@@ -149,7 +154,7 @@ describe.skip('Sockets', function () {
 				Sockets.roomAdd(worker, cid, sid);
 				Sockets.roomRemove(worker, cid, sid);
 			}).then(chain(worker => data => {
-				assert.ok(data);
+				assert(data);
 			}, queryChannel));
 		});
 
@@ -176,7 +181,7 @@ describe.skip('Sockets', function () {
 					process.send(!!channel && (channel.get(${sid}) === ${scid}));`;
 				Sockets.channelMove(worker, cid, scid, sid);
 			}).then(chain(worker => data => {
-				assert.ok(data);
+				assert(data);
 			}, queryChannel));
 		});
 
@@ -192,7 +197,7 @@ describe.skip('Sockets', function () {
 				Sockets.channelMove(worker, cid, scid, sid);
 				Sockets.roomRemove(worker, cid, sid);
 			}).then(chain(worker => data => {
-				assert.ok(data);
+				assert(data);
 			}, queryChannel));
 		});
 
@@ -210,3 +215,5 @@ describe.skip('Sockets', function () {
 		});
 	});
 });
+
+*/

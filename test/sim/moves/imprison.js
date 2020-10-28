@@ -50,12 +50,12 @@ describe('Imprison', function () {
 
 	it(`should not prevent foes from using Z-Powered Status moves`, function () {
 		battle = common.createBattle();
-		battle.setPlayer('p1', {team: [{species: 'Sableye', ability: 'prankster', moves: ['imprison', 'sun']}]});
-		battle.setPlayer('p2', {team: [{species: 'Charmander', ability: 'blaze', item: 'firiumz', moves: ['sun']}]});
+		battle.setPlayer('p1', {team: [{species: 'Sableye', ability: 'prankster', moves: ['imprison', 'sunnyday']}]});
+		battle.setPlayer('p2', {team: [{species: 'Charmander', ability: 'blaze', item: 'firiumz', moves: ['sunnyday']}]});
 
-		battle.makeChoices('move imprison', 'move sun zmove');
+		battle.makeChoices('move imprison', 'move sunnyday zmove');
 		assert.statStage(battle.p2.active[0], 'spe', 1);
-		assert.ok(battle.field.isWeather('sun'));
+		assert(battle.field.isWeather('sunnyday'));
 	});
 
 	it(`should not prevent the user from using moves that a foe knows`, function () {

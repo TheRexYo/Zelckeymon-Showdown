@@ -1,10 +1,12 @@
+import {Utils} from '../../lib/utils';
+
 interface ElimTree {
 	root: ElimNode;
 	currentLayerLeafNodes: ElimNode[];
 	nextLayerLeafNodes: ElimNode[];
 }
 
-type TournamentPlayer = import('./index').TournamentPlayer;
+import type {TournamentPlayer} from './index';
 
 /**
  * There are two types of elim nodes, player nodes
@@ -73,23 +75,19 @@ class ElimNode {
 		}
 		this.children = children;
 	}
-	traverse(callback: (node: ElimNode) => void) {
+	traverse(multiCallback: (node: ElimNode) => void) {
 		const queue: ElimNode[] = [this];
 		let node;
-		// tslint:disable-next-line: no-conditional-assignment
 		while ((node = queue.shift())) {
-			// eslint-disable-next-line callback-return
-			callback(node);
+			multiCallback(node);
 			if (node.children) queue.push(...node.children);
 		}
 	}
-	find<T>(callback: (node: ElimNode) => (T | void)) {
+	find<T>(multiCallback: (node: ElimNode) => (T | void)) {
 		const queue: ElimNode[] = [this];
 		let node;
-		// tslint:disable-next-line: no-conditional-assignment
 		while ((node = queue.shift())) {
-			// eslint-disable-next-line callback-return
-			const value = callback(node);
+			const value = multiCallback(node);
 			if (value) {
 				return value;
 			}
@@ -192,7 +190,7 @@ export class Elimination {
 		// build the winner's bracket
 		let tree: ElimTree = null!;
 
-		for (const user of Dex.shuffle(players)) {
+		for (const user of Utils.shuffle(players)) {
 			if (!tree) {
 				tree = {
 					root: new ElimNode({user}),
@@ -227,7 +225,6 @@ export class Elimination {
 			const matchesByDepth: {[depth: number]: ElimNode[]} = {};
 			const queue = [{node: tree.root, depth: 0}];
 			let frame;
-			// tslint:disable-next-line: no-conditional-assignment
 			while ((frame = queue.shift())) {
 				if (!frame.node.children || frame.node.losersBracketNode) continue;
 

@@ -45,9 +45,9 @@ describe('Ingrain', function () {
 		]});
 		battle.setPlayer('p2', {team: [{species: 'Arcanine', ability: 'flashfire', moves: ['sleeptalk', 'roar']}]});
 		battle.makeChoices('move ingrain', 'move roar');
-		assert.equal(battle.p1.active[0].speciesid, 'cradily');
+		assert.equal(battle.p1.active[0].species.id, 'cradily');
 		assert.trapped(() => battle.makeChoices('switch pikachu', 'move sleeptalk'));
-		assert.equal(battle.p1.active[0].speciesid, 'cradily');
+		assert.equal(battle.p1.active[0].species.id, 'cradily');
 	});
 
 	it('should remove the users\' Ground immunities', function () {
@@ -56,7 +56,7 @@ describe('Ingrain', function () {
 		battle.setPlayer('p2', {team: [{species: 'Carnivine', ability: 'levitate', moves: ['earthquake', 'ingrain']}]});
 		battle.makeChoices('move ingrain', 'move ingrain');
 		battle.makeChoices('move earthquake', 'move earthquake');
-		assert.notStrictEqual(battle.p1.active[0].hp, battle.p1.active[0].maxhp);
-		assert.notStrictEqual(battle.p2.active[0].hp, battle.p2.active[0].maxhp);
+		assert.notEqual(battle.p1.active[0].hp, battle.p1.active[0].maxhp);
+		assert.notEqual(battle.p2.active[0].hp, battle.p2.active[0].maxhp);
 	});
 });

@@ -8,15 +8,14 @@
  * @license MIT
  */
 
-// eslint-disable-next-line no-undef
-const LadderStore: typeof LadderStoreT = (typeof Config === 'object' && Config.remoteladder ?
-	require('./ladders-remote') :
-	require('./ladders-local')).LadderStore;
+const LadderStore: typeof import('./ladders-remote').LadderStore = (
+	typeof Config === 'object' && Config.remoteladder ? require('./ladders-remote') : require('./ladders-local')
+).LadderStore;
 
 const SECONDS = 1000;
 const PERIODIC_MATCH_INTERVAL = 60 * SECONDS;
 
-type ChallengeType = import('./room-battle').ChallengeType;
+import type {ChallengeType} from './room-battle';
 
 /**
  * This represents a user's search for a battle under a format.
@@ -25,13 +24,23 @@ class BattleReady {
 	readonly userid: ID;
 	readonly formatid: string;
 	readonly team: string;
+	readonly hidden: boolean;
+	readonly inviteOnly: boolean;
 	readonly rating: number;
 	readonly challengeType: ChallengeType;
 	readonly time: number;
-	constructor(userid: ID, formatid: string, team: string, rating = 0, challengeType: ChallengeType) {
+	constructor(
+		userid: ID,
+		formatid: string,
+		settings: User['battleSettings'],
+		rating: number,
+		challengeType: ChallengeType
+	) {
 		this.userid = userid;
 		this.formatid = formatid;
-		this.team = team;
+		this.team = settings.team;
+		this.hidden = settings.hidden;
+		this.inviteOnly = settings.inviteOnly;
 		this.rating = rating;
 		this.challengeType = challengeType;
 		this.time = Date.now();
@@ -74,7 +83,7 @@ class Ladder extends LadderStore {
 		// all validation for a battle goes through here
 		const user = connection.user;
 		const userid = user.id;
-		if (team === null) team = user.team;
+		if (team === null) team = user.battleSettings.team;
 
 		if (Rooms.global.lockdown && Rooms.global.lockdown !== 'pre') {
 			let message = `The server is restarting. Battles will be available again in a few minutes.`;
@@ -101,23 +110,6 @@ class Ladder extends LadderStore {
 		} catch (e) {
 			connection.popup(`Your selected format is invalid:\n\n- ${e.message}`);
 			return null;
-		}
-
-		const regex = /(?:^|])([^|]*)\|/g;
-		let match = regex.exec(team);
-		while (match) {
-			let nickname = match[1];
-			if (nickname) {
-				nickname = Chat.nicknamefilter(nickname, user);
-				if (!nickname || nickname !== match[1]) {
-					connection.popup(
-						`Your team was rejected for the following reason:\n\n` +
-						`- Your Pokémon has a banned nickname: ${match[1]}`
-					);
-					return null;
-				}
-			}
-			match = regex.exec(team);
 		}
 
 		let rating = 0;
@@ -150,7 +142,52 @@ class Ladder extends LadderStore {
 			return null;
 		}
 
-		return new BattleReady(userid, this.formatid, valResult.slice(1), rating, challengeType);
+		const regex = /(?:^|])([^|]*)\|([^|]*)\|/g;
+		let match = regex.exec(team);
+		let unownWord = '';
+		while (match) {
+			let nickname = match[1];
+			const speciesid = toID(match[2] || match[1]);
+			if (speciesid.length <= 6 && speciesid.startsWith('unown')) {
+				unownWord += speciesid.charAt(5) || 'a';
+			}
+			if (nickname) {
+				nickname = Chat.nicknamefilter(nickname, user);
+				if (!nickname || nickname !== match[1]) {
+					connection.popup(
+						`Your team was rejected for the following reason:\n\n` +
+						`- Your Pokémon has a banned nickname: ${match[1]}`
+					);
+					return null;
+				}
+			}
+			match = regex.exec(team);
+		}
+		if (unownWord) {
+			const filtered = Chat.nicknamefilter(unownWord, user);
+			if (!filtered || filtered !== unownWord) {
+				connection.popup(
+					`Your team was rejected for the following reason:\n\n` +
+					`- Your Unowns spell out a banned word: ${unownWord.toUpperCase()}`
+				);
+				return null;
+			}
+		}
+
+		const settings = {...user.battleSettings, team: valResult.slice(1) as string};
+		user.battleSettings.inviteOnly = false;
+		user.battleSettings.hidden = false;
+		return new BattleReady(userid, this.formatid, settings, rating, challengeType);
+	}
+
+	static getChallenging(userid: ID) {
+		const userChalls = Ladders.challenges.get(userid);
+		if (userChalls) {
+			for (const chall of userChalls) {
+				if (chall.from === userid) return chall;
+			}
+		}
+		return null;
 	}
 
 	static cancelChallenging(user: User) {
@@ -201,7 +238,7 @@ class Ladder extends LadderStore {
 			connection.popup(`You are already challenging someone. Cancel that challenge before challenging someone else.`);
 			return false;
 		}
-		if (targetUser.blockChallenges && !user.can('bypassblocks', targetUser)) {
+		if (targetUser.settings.blockChallenges && !user.can('bypassblocks', targetUser)) {
 			connection.popup(`The user '${targetUser.name}' is not accepting challenges right now.`);
 			Chat.maybeNotifyBlocked('challenge', targetUser, user);
 			return false;
@@ -209,6 +246,14 @@ class Ladder extends LadderStore {
 		if (Date.now() < user.lastChallenge + 10 * SECONDS) {
 			// 10 seconds ago, probable misclick
 			connection.popup(`You challenged less than 10 seconds after your last challenge! It's cancelled in case it's a misclick.`);
+			return false;
+		}
+		const currentChallenges = Ladders.challenges.get(targetUser.id);
+		if (currentChallenges && currentChallenges.length >= 3 && !user.autoconfirmed) {
+			connection.popup(
+				`This user already has 3 pending challenges.\n` +
+				`You must be autoconfirmed to challenge them.`
+			);
 			return false;
 		}
 		const ready = await this.prepBattle(connection, 'challenge');
@@ -247,15 +292,6 @@ class Ladder extends LadderStore {
 		return true;
 	}
 
-	static getChallenging(userid: ID) {
-		const userChalls = Ladders.challenges.get(userid);
-		if (userChalls) {
-			for (const chall of userChalls) {
-				if (chall.from === userid) return chall;
-			}
-		}
-		return null;
-	}
 	static addChallenge(challenge: Challenge, skipUpdate = false) {
 		let challs1 = Ladders.challenges.get(challenge.from);
 		if (!challs1) Ladders.challenges.set(challenge.from, challs1 = []);
@@ -539,9 +575,13 @@ class Ladder extends LadderStore {
 			p1: user1,
 			p1team: ready1.team,
 			p1rating: ready1.rating,
+			p1hidden: ready1.hidden,
+			p1inviteOnly: ready1.inviteOnly,
 			p2: user2,
 			p2team: ready2.team,
 			p2rating: ready2.rating,
+			p2hidden: ready2.hidden,
+			p2inviteOnly: ready2.inviteOnly,
 			rated: Math.min(ready1.rating, ready2.rating),
 			challengeType: ready1.challengeType,
 		});
